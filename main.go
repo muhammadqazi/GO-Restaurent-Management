@@ -3,10 +3,13 @@ package main
 import (
 	"os"
 
+	"golang-restaurant-management/database"
+
+	middleware "golang-restaurant-management/middleware"
+	routes "golang-restaurant-management/routes"
+
 	"github.com/gin-gonic/gin"
-	"github.com/muhammadqazi/restaurent-management/database"
-	"github.com/muhammadqazi/restaurent-management/middleware"
-	"github.com/muhammadqazi/restaurent-management/routes"
+
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -21,18 +24,15 @@ func main() {
 
 	router := gin.New()
 	router.Use(gin.Logger())
-
 	routes.UserRoutes(router)
-
 	router.Use(middleware.Authentication())
 
 	routes.FoodRoutes(router)
 	routes.MenuRoutes(router)
-	routes.OrderRoutes(router)
 	routes.TableRoutes(router)
+	routes.OrderRoutes(router)
 	routes.OrderItemRoutes(router)
 	routes.InvoiceRoutes(router)
 
-	router.Run("localhost:" + port)
-
+	router.Run(":" + port)
 }
